@@ -1,0 +1,36 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:vm="using:voicio.ViewModels"
+			 x:Class="voicio.App"
+			 x:DataType="vm:MainGlobalView"
+             RequestedThemeVariant="Default"
+			 x:CompileBindings="True">
+    <Application.Styles>
+		<FluentTheme/>
+		<StyleInclude Source="avares://Avalonia.Controls.TreeDataGrid/Themes/Fluent.axaml"/>
+		<!--<StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml"/>-->
+    </Application.Styles>
+	<TrayIcon.Icons>
+		<TrayIcons>
+			<TrayIcon Icon="/Assets/avalonia-logo.ico"
+					  ToolTipText="App" Command="{Binding OpenMainWindow}">
+				<TrayIcon.Menu>
+					<NativeMenu>
+						<NativeMenuItem Header="Voice search">
+						</NativeMenuItem>
+						<NativeMenuItem Header="Tags" Command="{Binding ShowTagsWindowCommand}">
+						</NativeMenuItem>
+						<NativeMenuItem Header="Import" Command="{Binding ShowImportWindowCommand}">
+						</NativeMenuItem>
+						<NativeMenuItem Header="Add hint">
+						</NativeMenuItem>
+						<NativeMenuItem Header="Settings">
+						</NativeMenuItem>
+						<NativeMenuItem Header="Exit" Command="{Binding QuitAppCommand}">
+						</NativeMenuItem>
+					</NativeMenu>
+				</TrayIcon.Menu>
+			</TrayIcon>
+		</TrayIcons>
+	</TrayIcon.Icons>
+</Application>
