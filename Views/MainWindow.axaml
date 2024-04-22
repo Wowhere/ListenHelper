@@ -49,7 +49,7 @@
 		</Style>
 		<Style Selector="ToggleButton.SearchType">
 			<Style Selector="^:unchecked ContentPresenter#PART_ContentPresenter">
-				<Setter Property="Background" Value="#FFFF6B14"/>
+				<Setter Property="Background" Value="Gray"/>
 				<Setter Property="Content" Value="Strict"/>
 			</Style>
 			<Style Selector="^:checked ContentPresenter#PART_ContentPresenter">
