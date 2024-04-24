@@ -1,3 +1,4 @@
+using System;
 using Avalonia.Controls;
 using Avalonia.Input;
 
@@ -7,22 +8,16 @@ namespace voicio.Views
     {
         public MainWindow()
         {
+            this.Opened += StartFocusing;
             InitializeComponent();
-            var focused = this.FindControl<AutoCompleteBox>("searchInput");
+        }
+        private void StartFocusing(object sender, EventArgs arg) {
+            var focused = this.FindControl<AutoCompleteBox>("searchbox");
             if (focused != null)
             {
-                focused.AttachedToVisualTree += (s, e) => focused.Focus();
+                focused.Loaded += (s, e) => focused.Focus();
             }
         }
-        //protected override void OnInitialized()
-        //{
-        //    base.OnInitialized();
-        //    var focused = this.FindControl<AutoCompleteBox>("searchInput");
-        //    if (focused != null)
-        //    {
-        //        focused.AttachedToVisualTree += (s, e) => focused.Focus();
-        //    }
-        //}
         public async void CopyHintToClipboard(object sender, TappedEventArgs e)
         {
             if (e.Source.GetType() == typeof(TextBlock))

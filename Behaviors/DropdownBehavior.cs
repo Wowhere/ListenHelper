@@ -15,6 +15,7 @@ namespace voicio.Behaviors
             {
                 AssociatedObject.KeyUp += OnKeyUp;
                 AssociatedObject.DropDownOpening += DropDownOpening;
+                AssociatedObject.Focus();
                 Task.Delay(100).ContinueWith(_ => Avalonia.Threading.Dispatcher.UIThread.Invoke(() => { CreatePanel(); }));
             }
 

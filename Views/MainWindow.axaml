@@ -40,26 +40,26 @@
 		<Style Selector="ToggleButton.Pin">
 			<Style Selector="^:unchecked ContentPresenter#PART_ContentPresenter">
 				<Setter Property="Content" Value="No pin"/>
-				<Setter Property="Background" Value="Gray"/>
+				<Setter Property="Background" Value="DarkGoldenrod"/>
 			</Style>
 			<Style Selector="^:checked ContentPresenter#PART_ContentPresenter">
 				<Setter Property="Content" Value="Pin"/>
-				<Setter Property="Background" Value="RoyalBlue"/>
+				<Setter Property="Background" Value="Green"/>
 			</Style>
 		</Style>
 		<Style Selector="ToggleButton.SearchType">
 			<Style Selector="^:unchecked ContentPresenter#PART_ContentPresenter">
-				<Setter Property="Background" Value="Gray"/>
+				<Setter Property="Background" Value="DarkGoldenrod"/>
 				<Setter Property="Content" Value="Strict"/>
 			</Style>
 			<Style Selector="^:checked ContentPresenter#PART_ContentPresenter">
-				<Setter Property="Background" Value="#FFFF6B14"/>
+				<Setter Property="Background" Value="Green"/>
 				<Setter Property="Content" Value="Fuzzy"/>
 			</Style>
 		</Style>
 		<Style Selector="ToggleButton.EditingMode">
 			<Style Selector="^:unchecked ContentPresenter#PART_ContentPresenter">
-				<Setter Property="Background" Value="Gray"/>
+				<Setter Property="Background" Value="#5b5b5b"/>
 				<Setter Property="Content" Value="Editing off"/>
 			</Style>
 			<Style Selector="^:checked ContentPresenter#PART_ContentPresenter">
@@ -72,7 +72,7 @@
 	<StackPanel>
 		<Label Margin="10,5,10,0" BorderBrush="White">Voicio</Label>
 		<DockPanel>
-			<AutoCompleteBox Focusable="True" FilterMode="None" x:Name="searchInput" Text="{Binding Query}" ItemsSource="{Binding LastSearches}" Width="600" Watermark="Input..." Margin="10,40,10,0">
+			<AutoCompleteBox Focusable="True" FilterMode="None" x:Name="searchbox" Text="{Binding Query}" ItemsSource="{Binding LastSearches}" Width="600" Watermark="Input..." Margin="10,40,10,0">
 				<i:Interaction.Behaviors>
 					<bh:DropdownBehavior/>
 				</i:Interaction.Behaviors>
