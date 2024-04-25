@@ -1,4 +1,7 @@
 ﻿using ReactiveUI;
+using System.Collections.Generic;
+using System.Reactive;
+using voicio.Models;
 
 namespace voicio.ViewModels
 {
@@ -10,6 +13,7 @@ namespace voicio.ViewModels
             get => _IsPinnedWindow;
             set => this.RaiseAndSetIfChanged(ref _IsPinnedWindow, value);
         }
+        
         public ImportWindowViewModel()
         {
             

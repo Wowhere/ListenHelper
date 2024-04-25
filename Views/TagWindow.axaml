@@ -61,6 +61,11 @@
 	</Window.Styles>
 	<Border BorderThickness="1.5" BorderBrush="#D2B1A38E" IsVisible="True">
 	<StackPanel>
+		<DockPanel HorizontalAlignment="Stretch">
+			<ToggleButton IsChecked="{Binding IsPinnedWindow, Mode = TwoWay}" Classes="Pin" Width="65" Height="30" Margin="5,40,10,0">
+			</ToggleButton>
+			<Button Command="{Binding ShowTags}" Content="Show tags" Margin="10,10,20,10" Background="RoyalBlue" IsEnabled="True"></Button>
+		</DockPanel>
 		<TreeDataGrid x:Name="tagGrid" Source="{Binding TagsGridData}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="2" BorderBrush="Gray">
 		</TreeDataGrid>
 	</StackPanel>
