@@ -12,6 +12,16 @@ namespace voicio.Models
         public int Id { get; set; }
         public string? TagText { get; set; }
         public List<HintTag> HintTag { get; } = new();
+        [NotMapped]
+        public bool IsSaved { get; set; } = true; //false = temp, true = in DB
+        public Tag(bool isSaved)
+        {
+            IsSaved = isSaved;
+        }
+        public Tag()
+        {
+            IsSaved = true;
+        }
     }
     public class Hint
     {

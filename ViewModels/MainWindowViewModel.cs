@@ -8,12 +8,15 @@ using Avalonia.Controls;
 using Avalonia.Controls.Models.TreeDataGrid;
 using Avalonia.Controls.Selection;
 using Avalonia.Controls.Templates;
+using voicio.Behaviors;
+//using Avalonia.Xaml.Interactivity;
 using DynamicData;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using System.Reactive;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
+using Avalonia.Interactivity;
 
 namespace voicio.ViewModels
 {
@@ -41,7 +44,7 @@ namespace voicio.ViewModels
             get => _HintsGridData;
             set => this.RaiseAndSetIfChanged(ref _HintsGridData, value);
         }
-        private string _query;
+        private string _query = "";
         public string Query
         {
             get => _query;
@@ -212,6 +215,16 @@ namespace voicio.ViewModels
             }
             return TagsPanel;
         }
+        private AutoCompleteBox TagControlInit() { 
+            var addtag = new AutoCompleteBox( );
+            using (var DataSource = new HelpContext())
+            {
+                addtag.ItemsSource = DataSource.TagTable.Where(b => b.HintTag.Any());
+            }
+            //addtag.AddDisposableHandler(DropdownBehavior, );// DropdownBehavior
+            return new AutoCompleteBox(); 
+        }
+
         public void TreeDataGridInit()
         {
             var TextColumnLength = new GridLength(1, GridUnitType.Star);
@@ -238,7 +251,6 @@ namespace voicio.ViewModels
                     },
                     
                 };
-                //Views.MainWindow.res
                 IsAddButtonVisible = true;
             }
             else
@@ -256,7 +268,8 @@ namespace voicio.ViewModels
                     {
                         HintTextColumn,
                         HintCommentColumn,
-                        TagColumn
+                        TagColumn,
+                        new TemplateColumn<Hint>("", new FuncDataTemplate<Hint>((a, e) => TagControlInit(), supportsRecycling: true), width: TemplateColumnLength)
                     },
                 };
                 IsAddButtonVisible = false;
@@ -269,7 +282,6 @@ namespace voicio.ViewModels
         {
             using (var DataSource = new HelpContext())
             {
-                //LastSearches.Add(Query);
                 LastSearches.Insert(0, Query);
                 List<Hint> hints = new List<Hint>();
                 if (IsFuzzy)

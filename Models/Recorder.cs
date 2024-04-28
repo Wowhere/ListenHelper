@@ -5,11 +5,11 @@ namespace voicio.Models
 {
     public class NAudioRecorder
 {
-    private WaveInEvent Microphone;
+    private readonly WaveInEvent Microphone;
     private bool IsRecording = false;
-    private WaveFileWriter CustomWaveProvider;
-    private MemoryStream CustomStream;
-    private void DataAvailableEvent(object sender, WaveInEventArgs e)
+    private readonly WaveFileWriter CustomWaveProvider;
+    private readonly MemoryStream CustomStream;
+    private void DataAvailableEvent(object? sender, WaveInEventArgs e)
     {
         CustomWaveProvider.Write(e.Buffer, 0, e.BytesRecorded);
     }

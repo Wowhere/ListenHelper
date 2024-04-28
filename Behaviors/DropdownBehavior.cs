@@ -1,5 +1,4 @@
-﻿using Avalonia.Interactivity;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Xaml.Interactivity;
 using System.Threading.Tasks;

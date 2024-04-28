@@ -5,7 +5,7 @@ namespace voicio.Models
 {
     public class SpeechRecognition
     {
-        private VoskRecognizer rec;
+        private readonly VoskRecognizer rec;
         public string Recognize(byte[] buffer)
         {
             using (MemoryStream source = new MemoryStream(buffer))
