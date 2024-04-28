@@ -2,8 +2,8 @@
 using Avalonia.Logging;
 using Avalonia.ReactiveUI;
 using System;
-using Avalonia.Win32.Interop;
-using Avalonia.Win32.Input;
+//using Avalonia.Win32.Interop;
+//using Avalonia.Win32.Input;
 namespace voicio
 {
     internal class Program

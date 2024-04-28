@@ -14,15 +14,15 @@ namespace voicio.ViewModels
         public ReactiveCommand<Unit, Unit> ShowImportWindowCommand { get; }
         public MainGlobalView() {
             OpenMainWindow = ReactiveCommand.Create(() => {
-                var w1 = new MainWindow();
+                var w1 = new MainWindow() { DataContext = new MainWindowViewModel() };
                 w1.Show();
             });
             ShowImportWindowCommand = ReactiveCommand.Create(() => {
-                var w2 = new ImportWindow();
+                var w2 = new ImportWindow() { DataContext = new ImportWindowViewModel() };
                 w2.Show();
             });
             ShowTagsWindowCommand = ReactiveCommand.Create(() => {
-                var w3 = new TagWindow();
+                var w3 = new TagWindow() { DataContext = new TagWindowViewModel() };
                 w3.Show();
             });
             QuitAppCommand = ReactiveCommand.Create(() => {
