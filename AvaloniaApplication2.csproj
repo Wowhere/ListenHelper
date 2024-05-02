@@ -24,13 +24,13 @@
 
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="11.0.10" />
-    <PackageReference Include="Avalonia.Controls.TreeDataGrid" Version="11.0.2" />
+    <PackageReference Include="Avalonia.Controls.TreeDataGrid" Version="11.0.10" />
     <PackageReference Include="Avalonia.Desktop" Version="11.0.10" />
     <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.10" />
     <PackageReference Include="Avalonia.Fonts.Inter" Version="11.0.10" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
     <PackageReference Include="Avalonia.ReactiveUI" Version="11.0.10" />
-    <PackageReference Include="Avalonia.Xaml.Interactivity" Version="11.0.10.4" />
+    <PackageReference Include="Avalonia.Xaml.Interactivity" Version="11.0.10.9" />
     <PackageReference Include="EntityFramework" Version="6.4.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.4">

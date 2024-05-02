@@ -215,15 +215,23 @@ namespace voicio.ViewModels
             }
             return TagsPanel;
         }
-        private AutoCompleteBox TagControlInit() { 
-            var addtag = new AutoCompleteBox( );
+        private AutoCompleteBox TagControlInit()
+        {
+            var addtag = new AutoCompleteBox();
             using (var DataSource = new HelpContext())
             {
+                addtag.FilterMode = AutoCompleteFilterMode.None;
                 addtag.ItemsSource = DataSource.TagTable.Where(b => b.HintTag.Any());
             }
             //addtag.AddDisposableHandler(DropdownBehavior, );// DropdownBehavior
-            return new AutoCompleteBox(); 
+            return addtag;
         }
+        //private DropDownButton TagControlInit()
+        //{
+        //    var addtag = new DropDownButton();
+        //    //addtag.AddDisposableHandler(DropdownBehavior, );// DropdownBehavior
+        //    return addtag;
+        //}
 
         public void TreeDataGridInit()
         {
