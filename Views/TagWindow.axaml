@@ -37,11 +37,15 @@
 	</Window.Styles>
 	<Border BorderThickness="1.5" BorderBrush="#D2B1A38E" IsVisible="True">
 	<StackPanel>
-		<DockPanel HorizontalAlignment="Stretch">
-			<Button Height="40" Command="{Binding AddTag}" Content="Add" Margin="15,10,15,10" Background="#D538A669" Width="80"></Button>
-			<Button Command="{Binding ShowAllTags}" Content="Show all tags" Margin="10,10,20,10" Background="RoyalBlue" IsEnabled="True"></Button>
+		<DockPanel>
+			<TextBox Focusable="True" x:Name="searchbox" Text="{Binding Query}" Width="600" Watermark="Input..." Margin="10,40,10,0"/>
 			<ToggleButton IsChecked="{Binding IsPinnedWindow, Mode = TwoWay}" Classes="Pin" Width="65" Height="30" Margin="5,40,10,0">
 			</ToggleButton>
+		</DockPanel>
+		<DockPanel HorizontalAlignment="Stretch">
+			<Button Width="340" Height="30" Command="{Binding StartSearchCommand}" Content="Search" Margin="10,10,20,10" Background="RoyalBlue" IsEnabled="True"></Button>
+			<Button Height="30" Command="{Binding AddTag}" Content="Add" Margin="15,10,15,10" Background="#D538A669" Width="80"></Button>
+			<Button Command="{Binding ShowAllTags}" Content="Show all tags" Margin="10,10,20,10" Background="RoyalBlue" IsEnabled="True"></Button>
 		</DockPanel>
 		<TreeDataGrid x:Name="tagGrid" Source="{Binding TagsGridData}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="2" BorderBrush="Gray">
 		</TreeDataGrid>

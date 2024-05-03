@@ -16,7 +16,11 @@
 	</Window.Styles>
 	<Border BorderThickness="1.5" BorderBrush="#D2B1A38E" IsVisible="True">
 	<StackPanel>
-		
+		<DockPanel HorizontalAlignment="Center">
+		<Button Content="Import"></Button>
+		<Button Content="Import from file"></Button>
+		</DockPanel>
+		<TextBox Height="200" AcceptsReturn="True" TextWrapping="Wrap"></TextBox>
 	</StackPanel>
 	</Border>
 </Window>

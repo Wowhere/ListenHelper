@@ -1,6 +1,5 @@
 ﻿using ReactiveUI;
 using voicio.Models;
-using voicio.Behaviors;
 using System.Collections.ObjectModel;
 using Avalonia.Controls;
 using System.Collections.Generic;
@@ -11,6 +10,8 @@ using Avalonia.Controls.Templates;
 using Avalonia.Controls.Selection;
 using Avalonia.Media;
 using Avalonia.Interactivity;
+using Avalonia.Controls.Primitives;
+using DynamicData;
 
 namespace voicio.ViewModels
 {
@@ -138,9 +139,21 @@ namespace voicio.ViewModels
             Tag NewTag = new Tag(false);
             TagsRows.Add(NewTag);
         }
+        public ReactiveCommand<Unit, Unit> StartSearchCommand { get; }
+        public void StartSearch()
+        {
+            using (var DataSource = new HelpContext())
+            {
+                List<Tag> tags = new List<Tag>();
+                tags.Add(DataSource.TagTable.Where(b => b.TagText.Contains(Query)).ToList());
+                TagsRows = new ObservableCollection<Tag>(tags);
+            }
+            TreeDataGridInit();
+        }
         public TagWindowViewModel()
         {
             Query = "";
+            StartSearchCommand = ReactiveCommand.Create(StartSearch);
             ShowTagsCommand = ReactiveCommand.Create(ShowAllTags);
             TagsRows = new ObservableCollection<Tag>();
             TreeDataGridInit();
