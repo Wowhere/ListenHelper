@@ -65,7 +65,7 @@ namespace voicio.ViewModels
         private bool _IsTextSearch = true;
         private bool _IsCommentSearch = true;
         private bool _IsTagSearch = true;
-        private bool _IsFuzzy = false;
+        private bool _IsFuzzy = true;
         private bool _IsGridEditable = false;
         private bool _IsAddButtonVisible = false;
         private bool _IsHighlighting = false;

@@ -8,7 +8,9 @@ namespace voicio.ViewModels
 {
     public class MainGlobalView: ViewModelBase
     {
-        public ReactiveCommand<Unit,Unit> OpenMainWindow { get; set; }
+        private ImportWindow importWindow = null;
+        private TagWindow tagWindow = null;
+        public ReactiveCommand<Unit,Unit> OpenMainWindow { get; }
         public ReactiveCommand<Unit, Unit> QuitAppCommand { get; }
         public ReactiveCommand<Unit, Unit> ShowTagsWindowCommand { get; }
         public ReactiveCommand<Unit, Unit> ShowImportWindowCommand { get; }
@@ -18,12 +20,20 @@ namespace voicio.ViewModels
                 w1.Show();
             });
             ShowImportWindowCommand = ReactiveCommand.Create(() => {
-                var w1 = new ImportWindow() { DataContext = new ImportWindowViewModel() };
-                w1.Show();
+                if (importWindow is not null) { importWindow.Focus(); }
+                else
+                {
+                    importWindow = new ImportWindow() { DataContext = new ImportWindowViewModel() };
+                    importWindow.Show();
+                }
             });
             ShowTagsWindowCommand = ReactiveCommand.Create(() => {
-                var w1 = new TagWindow() { DataContext = new TagWindowViewModel() };
-                w1.Show();
+                if (tagWindow is not null) { tagWindow.Focus(); tagWindow.Show(); }
+                else
+                {
+                    tagWindow = new TagWindow() { DataContext = new TagWindowViewModel() };
+                    tagWindow.Show();
+                }
             });
             QuitAppCommand = ReactiveCommand.Create(() => {
                 if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
@@ -31,7 +41,6 @@ namespace voicio.ViewModels
                     desktop.Shutdown();
                 }
             });
-
         }
     }
 }

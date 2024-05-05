@@ -33,6 +33,10 @@
 			<Setter Property="HorizontalContentAlignment" Value="Center"/>
 			<Setter Property="VerticalContentAlignment" Value="Center"/>
 		</Style>
+		<Style Selector="Button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+			<Setter Property="Background" Value="Cyan"></Setter>
+			<Setter Property="BorderBrush" Value="WhiteSmoke"></Setter>
+		</Style>
 		<Style Selector="ToggleButton">
 			<Setter Property="HorizontalContentAlignment" Value="Center"/>
 			<Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -77,9 +81,9 @@
 					<bh:DropdownBehavior/>
 				</i:Interaction.Behaviors>
 			</AutoCompleteBox>
-			<ToggleButton IsChecked="{Binding IsFuzzy, Mode = TwoWay}" Classes="SearchType" Width="80" Height="30" Margin="10,40,10,0">
+			<ToggleButton IsChecked="{Binding IsFuzzy, Mode = TwoWay}" IsDefault="False" Classes="SearchType" Width="80" Height="30" Margin="10,40,10,0">
 			</ToggleButton>
-			<ToggleButton IsChecked="{Binding IsPinnedWindow, Mode = TwoWay}" Classes="Pin" Width="65" Height="30" Margin="5,40,10,0">
+			<ToggleButton IsChecked="{Binding IsPinnedWindow, Mode = TwoWay}" IsDefault="False" Classes="Pin" Width="65" Height="30" Margin="5,40,10,0">
 			</ToggleButton>
 		</DockPanel>
 		<StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
@@ -89,15 +93,14 @@
 			<!--<CheckBox IsChecked="{Binding IsHighlighting}" Margin="170,0,20,0">Highlight</CheckBox>-->
 		</StackPanel>
 		<DockPanel HorizontalAlignment="Stretch">
-			<Button Width="340" Height="40" Command="{Binding StartSearchCommand}" Content="Search" Margin="10,10,20,10" Background="RoyalBlue" IsEnabled="True"></Button>
-			<Button Width="160" Height="40" Command="{Binding StartVoiceSearch}" Content="Voice Search" Margin="15,10,15,10" Background="#C37B24D4" IsEnabled="True"></Button>
+			<Button Width="340" Height="40" Command="{Binding StartSearchCommand}" Content="Search" Margin="10,10,20,10" Background="RoyalBlue" IsDefault="True"></Button>
+			<Button Width="160" Height="40" Command="{Binding StartVoiceSearch}" Content="Voice Search" Margin="15,10,15,10" Background="#C37B24D4"></Button>
 			<Button Height="40" IsVisible="{Binding IsAddButtonVisible, Mode = TwoWay}" Command="{Binding AddTempHint}" Content="Add" Margin="15,10,15,10" Background="#D538A669" Width="80"></Button>
 			<ToggleButton IsChecked="{Binding IsGridEditable, Mode = TwoWay}" Width="100" Classes="EditingMode" Height="40" Margin="15,10,0,10"></ToggleButton>
 		</DockPanel>
 		<DockPanel>
 			<TextBlock x:Name="statusBlock" Text="{Binding StatusText}"></TextBlock>
 		</DockPanel>
-
 		<TreeDataGrid x:Name="resultGrid" Source="{Binding HintsGridData}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="2"  BorderBrush="Gray" CanUserResizeColumns="True" Tapped="CopyHintToClipboard">
 			<!--<TreeDataGridRowsPresenter Background="{StaticResource RowColorGridConverter}"/>-->
 			<TreeDataGrid.ContextMenu>

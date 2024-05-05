@@ -16,7 +16,7 @@ namespace voicio
         }
         public override void Initialize()
         {
-            AvaloniaXamlLoader.Load(this);   
+            AvaloniaXamlLoader.Load(this);
         }
         public override void OnFrameworkInitializationCompleted()
         {
@@ -26,7 +26,7 @@ namespace voicio
             {
                 desktop.MainWindow = new MainWindow
                 {
-                    DataContext = new MainWindowViewModel(),
+                   DataContext = new MainWindowViewModel(),
                 };
                 desktop.ShutdownMode = Avalonia.Controls.ShutdownMode.OnExplicitShutdown;
             }

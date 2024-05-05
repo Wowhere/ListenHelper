@@ -1,9 +1,10 @@
-using Avalonia.Controls;
-using Avalonia.Input;
+using voicio.ViewModels;
+using ReactiveUI;
+using Avalonia.ReactiveUI;
 
 namespace voicio.Views
 {
-    public partial class ImportWindow : Window
+    public partial class ImportWindow : ReactiveWindow<ImportWindowViewModel>
     {
         public ImportWindow()
         {
