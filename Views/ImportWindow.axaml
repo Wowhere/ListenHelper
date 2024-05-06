@@ -12,8 +12,12 @@
 		ExtendClientAreaToDecorationsHint="True"
 		ExtendClientAreaTitleBarHeightHint="-1">
 	<Window.Styles>
-		<Style Selector="Button:pointerover">
-			<!--<Setter Property="Effect" Value="blur(5)"></Setter>-->
+		<Style Selector="Button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+			<Setter Property="Background" Value="{Binding $parent[Button].Background}"></Setter>
+			<Setter Property="BorderBrush" Value="Wheat"></Setter>
+		</Style>
+		<Style Selector="ToggleButton:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+			<Setter Property="Background" Value="{Binding $parent[Button].Background}"></Setter>
 			<Setter Property="BorderBrush" Value="Wheat"></Setter>
 		</Style>
 	</Window.Styles>

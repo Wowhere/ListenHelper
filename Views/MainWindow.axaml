@@ -27,15 +27,18 @@
 			<Setter Property="BorderThickness" Value="1"/>
 			<Setter Property="BorderBrush" Value="Gray"/>
 			<Setter Property="HorizontalAlignment" Value="Stretch"/>
-			<!--<Setter Property="Background" Value="{Binding HintsGridData, Converter={StaticResource RowColorGridConverter}}"/>-->
 		</Style>
 		<Style Selector="Button">
 			<Setter Property="HorizontalContentAlignment" Value="Center"/>
 			<Setter Property="VerticalContentAlignment" Value="Center"/>
 		</Style>
 		<Style Selector="Button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-			<Setter Property="Background" Value="Cyan"></Setter>
-			<Setter Property="BorderBrush" Value="WhiteSmoke"></Setter>
+			<Setter Property="Background" Value="{Binding $parent[Button].Background}"></Setter>
+			<Setter Property="BorderBrush" Value="Wheat"></Setter>
+		</Style>
+		<Style Selector="ToggleButton:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+			<Setter Property="Background" Value="{Binding $parent[Button].Background}"></Setter>
+			<Setter Property="BorderBrush" Value="Wheat"></Setter>
 		</Style>
 		<Style Selector="ToggleButton">
 			<Setter Property="HorizontalContentAlignment" Value="Center"/>
