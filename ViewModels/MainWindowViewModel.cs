@@ -8,7 +8,6 @@ using Avalonia.Controls;
 using Avalonia.Controls.Models.TreeDataGrid;
 using Avalonia.Controls.Selection;
 using Avalonia.Controls.Templates;
-using voicio.Behaviors;
 //using Avalonia.Xaml.Interactivity;
 using DynamicData;
 using Avalonia.Interactivity;
@@ -16,7 +15,6 @@ using Avalonia.Media;
 using System.Reactive;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
-using Avalonia.Interactivity;
 
 namespace voicio.ViewModels
 {
@@ -111,7 +109,6 @@ namespace voicio.ViewModels
         }
         public ReactiveCommand<Unit, Unit> StartSearchCommand { get; }
         public ReactiveCommand<Unit, Unit> StartVoiceSearchCommand { get; }
-        //public ReactiveCommand<Unit, Unit> QuitAppCommand { get; }
         public void StartVoiceSearch()
         {
             if (!_IsVoiceSearching)

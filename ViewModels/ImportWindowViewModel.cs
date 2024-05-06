@@ -1,6 +1,9 @@
-﻿using ReactiveUI;
+﻿using System.IO;
+using ReactiveUI;
 using System.Reactive;
 using System.Threading.Tasks;
+using voicio.Models;
+using System.Data.SqlClient;
 
 namespace voicio.ViewModels
 {
@@ -12,8 +15,20 @@ namespace voicio.ViewModels
             get => _importText;
             set => this.RaiseAndSetIfChanged(ref _importText, value);
         }
-        public async Task InputTextImport() { 
-            
+        public void InputTextImport() {
+
+            using (StringReader reader = new StringReader(ImportText))
+            {
+                string line = "";
+                do { 
+                    line = reader.ReadLine();
+                    if (line != null)
+                    {
+                        var t= line.Split(',');
+                    }
+                } while (line != null);
+            }
+
         }
         public async Task FileImport()
         {
@@ -33,7 +48,7 @@ namespace voicio.ViewModels
         //public ReactiveCommand<Unit, Unit> FileImportCommand { get; }
         public ImportWindowViewModel()
         {
-            InputTextImportCommand = ReactiveCommand.CreateFromTask(InputTextImport);
+            InputTextImportCommand = ReactiveCommand.Create(InputTextImport);
             //FileImportCommand = ReactiveCommand.CreateFromTask(FileImport);
             ShowOpenFileDialog = new Interaction<Unit, string?>();
         }

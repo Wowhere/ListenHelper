@@ -23,6 +23,7 @@
 	</Window.Styles>
 	<Border BorderThickness="1.5" BorderBrush="#D2B1A38E" IsVisible="True">
 	<StackPanel>
+		<Label Margin="10,5,10,0" BorderBrush="White">Import hints</Label>
 		<DockPanel HorizontalAlignment="Center">
 		<Button Content="Import" Margin="10,10,10,10" Command="{Binding InputTextImportCommand}"></Button>
 		<!--<Button Content="Import from file" Margin="10,10,10,10" Command="{Binding FileImportCommand}"></Button>-->

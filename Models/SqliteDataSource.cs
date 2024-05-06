@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.SqlClient;
+using System.Data;
 
 namespace voicio.Models
 {
@@ -65,7 +67,7 @@ namespace voicio.Models
         public DbSet<Tag>? TagTable { get; set; }
         public DbSet<Hint>? HintTable { get; set; }
         public DbSet<HintTag>? HintTagTable { get; set; }
-        public string DbPath { get; }
+        private string DbPath { get; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlite($"Data Source={DbPath}");
@@ -74,6 +76,16 @@ namespace voicio.Models
         {
             var path = AppDomain.CurrentDomain.BaseDirectory;
             DbPath = System.IO.Path.Join(path, "helper.db");
+        }
+        public bool ImportHints(List<Hint> data)
+        {
+            using (var copier = new SqlBulkCopy($"Data Source={DbPath}"))
+            {
+                var importData = new DataTable();
+                copier.DestinationTableName = Model.FindEntityType(typeof(Hint)).GetTableName();
+                copier.WriteToServer(importData);
+            }
+            return true;
         }
     }
 }
