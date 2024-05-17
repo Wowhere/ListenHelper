@@ -30,6 +30,12 @@ namespace voicio.ViewModels
             get => _LastSearches;
             set => this.RaiseAndSetIfChanged(ref _LastSearches, value);
         }
+        private ObservableCollection<string>? _TagsForChoice;
+        public ObservableCollection<string>? TagsForChoice
+        {
+            get => _TagsForChoice;
+            set => this.RaiseAndSetIfChanged(ref _TagsForChoice, value);
+        }
         private ObservableCollection<Hint>? _HintsRows;
         public ObservableCollection<Hint>? HintsRows
         {
@@ -202,33 +208,19 @@ namespace voicio.ViewModels
             panel.HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Stretch;
             return panel;
         }
-        private ListBox TagsPanelInit(Hint a)
-        {
-            
-            var TagsPanel = new ListBox();
-            using (var DataSource = new HelpContext())
-            {
-                TagsPanel.ItemsSource = DataSource.TagTable.Where(b => b.HintTag.Any(pz => pz.Id == a.Id));
-            }
-            return TagsPanel;
-        }
+
         private AutoCompleteBox TagControlInit()
         {
             var addtag = new AutoCompleteBox();
             using (var DataSource = new HelpContext())
             {
-                addtag.FilterMode = AutoCompleteFilterMode.None;
-                addtag.ItemsSource = DataSource.TagTable.Where(b => b.HintTag.Any());
+                addtag.IsTextCompletionEnabled = true;
+                addtag.FilterMode = AutoCompleteFilterMode.Contains;
+                addtag.ItemsSource = new List<string>{"test", "custom"};// DataSource.TagTable.Where(b => b.HintTag.Any()).ToList();
             }
             //addtag.AddDisposableHandler(DropdownBehavior, );// DropdownBehavior
             return addtag;
         }
-        //private DropDownButton TagControlInit()
-        //{
-        //    var addtag = new DropDownButton();
-        //    //addtag.AddDisposableHandler(DropdownBehavior, );// DropdownBehavior
-        //    return addtag;
-        //}
 
         public void TreeDataGridInit()
         {
@@ -244,14 +236,12 @@ namespace voicio.ViewModels
                 };
                 TextColumn<Hint, string> HintTextColumn = new TextColumn<Hint, string>("Text", x => x.HintText, (r, v) => r.HintText = v, options: EditOptions, width: TextColumnLength);
                 TextColumn<Hint, string> HintCommentColumn = new TextColumn<Hint, string>("Comment", x => x.Comment, (r, v) => r.Comment = v, options: EditOptions, width: TextColumnLength);
-                TemplateColumn<Hint> TagColumn = new TemplateColumn<Hint>("Tags", new FuncDataTemplate<Hint>((a, e) => TagsPanelInit(a), supportsRecycling: true), width: TemplateColumnLength);
                 HintsGridData = new FlatTreeDataGridSource<Hint>(HintsRows)
                 {
                     Columns =
                     {
                         HintTextColumn,
                         HintCommentColumn,
-                        TagColumn,
                         new TemplateColumn<Hint>("", new FuncDataTemplate<Hint>((a, e) => ButtonsPanelInit(), supportsRecycling: true), width: TemplateColumnLength),
                     },
                     
@@ -266,14 +256,12 @@ namespace voicio.ViewModels
                 };
                 TextColumn<Hint, string> HintTextColumn = new TextColumn<Hint, string>("Text", x => x.HintText, options: ReadOptions, width: TextColumnLength);
                 TextColumn<Hint, string> HintCommentColumn = new TextColumn<Hint, string>("Comment", x => x.Comment, options: ReadOptions, width: TextColumnLength);
-                TemplateColumn<Hint> TagColumn = new TemplateColumn<Hint>("Tags", new FuncDataTemplate<Hint>((a, e) => TagsPanelInit(a), supportsRecycling: true), width: TemplateColumnLength);
                 HintsGridData = new FlatTreeDataGridSource<Hint>(HintsRows)
                 {
                     Columns =
                     {
                         HintTextColumn,
                         HintCommentColumn,
-                        TagColumn,
                         new TemplateColumn<Hint>("", new FuncDataTemplate<Hint>((a, e) => TagControlInit(), supportsRecycling: true), width: TemplateColumnLength)
                     },
                 };

@@ -24,7 +24,7 @@ namespace voicio.ViewModels
                     line = reader.ReadLine();
                     if (line != null)
                     {
-                        var t= line.Split(',');
+                        var t = line.Split(',');
                     }
                 } while (line != null);
             }
