@@ -8,13 +8,16 @@ using Avalonia.Controls;
 using Avalonia.Controls.Models.TreeDataGrid;
 using Avalonia.Controls.Selection;
 using Avalonia.Controls.Templates;
-//using Avalonia.Xaml.Interactivity;
 using DynamicData;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using System.Reactive;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
+using System.Reactive.Linq;
+using Avalonia.Data;
+using System;
+using Avalonia.Markup.Xaml.MarkupExtensions;
 
 namespace voicio.ViewModels
 {
@@ -30,8 +33,8 @@ namespace voicio.ViewModels
             get => _LastSearches;
             set => this.RaiseAndSetIfChanged(ref _LastSearches, value);
         }
-        private ObservableCollection<string>? _TagsForChoice;
-        public ObservableCollection<string>? TagsForChoice
+        private List<Tag>? _TagsForChoice;
+        public List<Tag>? TagsForChoice
         {
             get => _TagsForChoice;
             set => this.RaiseAndSetIfChanged(ref _TagsForChoice, value);
@@ -211,12 +214,18 @@ namespace voicio.ViewModels
 
         private AutoCompleteBox TagControlInit()
         {
+            System.IObservable<string>? tagsData = new string[] {}.ToObservable();
             var addtag = new AutoCompleteBox();
+            //var tagsData = new List<string> { "tester1", "customer1" };
+            addtag.IsTextCompletionEnabled = true;
+            addtag.FilterMode = AutoCompleteFilterMode.Contains;
             using (var DataSource = new HelpContext())
             {
-                addtag.IsTextCompletionEnabled = true;
-                addtag.FilterMode = AutoCompleteFilterMode.Contains;
-                addtag.ItemsSource = new List<string>{"test", "custom"};// DataSource.TagTable.Where(b => b.HintTag.Any()).ToList();
+                addtag.ItemsSource = TagsForChoice;
+                addtag.ItemTemplate = new FuncDataTemplate<Tag>((value, namescope) => new Label
+                {
+                [!Label.ContentProperty] = new Binding("TagText") { Converter = TODO}
+                });
             }
             //addtag.AddDisposableHandler(DropdownBehavior, );// DropdownBehavior
             return addtag;
@@ -242,6 +251,7 @@ namespace voicio.ViewModels
                     {
                         HintTextColumn,
                         HintCommentColumn,
+                        new TemplateColumn<Hint>("", new FuncDataTemplate<Hint>((a, e) => TagControlInit(), supportsRecycling: true), width: TemplateColumnLength),
                         new TemplateColumn<Hint>("", new FuncDataTemplate<Hint>((a, e) => ButtonsPanelInit(), supportsRecycling: true), width: TemplateColumnLength),
                     },
                     
@@ -277,6 +287,7 @@ namespace voicio.ViewModels
             {
                 LastSearches.Insert(0, Query);
                 List<Hint> hints = new List<Hint>();
+                TagsForChoice = DataSource.TagTable.ToList();
                 if (IsFuzzy)
                 {
                     if (IsTextSearch) hints.Add(DataSource.HintTable.Where(b => b.HintText.Contains(Query)).ToList());
