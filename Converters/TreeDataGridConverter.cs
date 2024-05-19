@@ -1,18 +1,20 @@
 ﻿using System;
+using System.CodeDom;
 using System.Globalization;
 using Avalonia.Data.Converters;
 
-namespace voicio.ViewModels
+namespace voicio.Converters
 {
     public class TreeDataGridConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return "value.";
+            return value.ToString();
         }
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return "";
+            throw new NotImplementedException();
         }
     }
 }
+

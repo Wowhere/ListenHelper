@@ -18,6 +18,7 @@ using System.Reactive.Linq;
 using Avalonia.Data;
 using System;
 using Avalonia.Markup.Xaml.MarkupExtensions;
+using Avalonia.Data.Converters;
 
 namespace voicio.ViewModels
 {
@@ -214,9 +215,7 @@ namespace voicio.ViewModels
 
         private AutoCompleteBox TagControlInit()
         {
-            System.IObservable<string>? tagsData = new string[] {}.ToObservable();
             var addtag = new AutoCompleteBox();
-            //var tagsData = new List<string> { "tester1", "customer1" };
             addtag.IsTextCompletionEnabled = true;
             addtag.FilterMode = AutoCompleteFilterMode.Contains;
             using (var DataSource = new HelpContext())
@@ -224,9 +223,10 @@ namespace voicio.ViewModels
                 addtag.ItemsSource = TagsForChoice;
                 addtag.ItemTemplate = new FuncDataTemplate<Tag>((value, namescope) => new Label
                 {
-                [!Label.ContentProperty] = new Binding("TagText") { Converter = TODO}
+                    [!Label.ContentProperty] = new Binding("TagText") { Converter = TreeDataGrid }
                 });
             }
+            var t = new Binding("TagText");
             //addtag.AddDisposableHandler(DropdownBehavior, );// DropdownBehavior
             return addtag;
         }
