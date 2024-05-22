@@ -19,6 +19,8 @@ using Avalonia.Data;
 using System;
 using Avalonia.Markup.Xaml.MarkupExtensions;
 using Avalonia.Data.Converters;
+using voicio.Converters;
+using System.Linq.Expressions;
 
 namespace voicio.ViewModels
 {
@@ -119,6 +121,7 @@ namespace voicio.ViewModels
         }
         public ReactiveCommand<Unit, Unit> StartSearchCommand { get; }
         public ReactiveCommand<Unit, Unit> StartVoiceSearchCommand { get; }
+        
         public void StartVoiceSearch()
         {
             if (!_IsVoiceSearching)
@@ -215,19 +218,20 @@ namespace voicio.ViewModels
 
         private AutoCompleteBox TagControlInit()
         {
+            var c = new TreeDataGridConverter();
             var addtag = new AutoCompleteBox();
+            addtag.ValueMemberBinding = new Binding("TagText") { Converter = c };
             addtag.IsTextCompletionEnabled = true;
             addtag.FilterMode = AutoCompleteFilterMode.Contains;
             using (var DataSource = new HelpContext())
             {
                 addtag.ItemsSource = TagsForChoice;
                 addtag.ItemTemplate = new FuncDataTemplate<Tag>((value, namescope) => new Label
-                {
-                    [!Label.ContentProperty] = new Binding("TagText") { Converter = TreeDataGrid }
+                {   
+                    [!Label.ContentProperty] = new Binding("TagText") {}
                 });
             }
             var t = new Binding("TagText");
-            //addtag.AddDisposableHandler(DropdownBehavior, );// DropdownBehavior
             return addtag;
         }
 
