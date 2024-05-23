@@ -80,6 +80,7 @@ namespace voicio.ViewModels
         private bool _IsAddButtonVisible = false;
         private bool _IsHighlighting = false;
         private bool _IsVoiceSearching = false;
+        private TreeDataGridConverter TagGocntrolConverter = new TreeDataGridConverter();
         public bool IsTextSearch
         {
             get => _IsTextSearch;
@@ -150,40 +151,41 @@ namespace voicio.ViewModels
         }
         private void RemoveHint(object sender, RoutedEventArgs e)
         {
-            Button b = (Button)sender;
-            Hint RemovedHint = (Hint)b.DataContext;
-            HintsRows.Remove(RemovedHint);
-            if (RemovedHint.IsSaved)
+            Button removeButton = (Button)sender;
+            Hint removedHint = (Hint)removeButton.DataContext;
+            HintsRows.Remove(removedHint);
+            if (removedHint.IsSaved)
             {
                 using (var DataSource = new HelpContext())
                 {
-                    DataSource.HintTable.Attach(RemovedHint);
-                    DataSource.HintTable.Remove(RemovedHint);
+                    DataSource.HintTable.Attach(removedHint);
+                    DataSource.HintTable.Remove(removedHint);
                     DataSource.SaveChanges();
                 }
             }
         }
         private void UpdateHint(object sender, RoutedEventArgs e)
         {
-            Button b = (Button)sender;
-            Hint UpdateHint = (Hint)b.DataContext;
-            if (UpdateHint.IsSaved)
+            Button updateButton = (Button)sender;
+            Hint updateHint = (Hint)updateButton.DataContext;
+            List<Tag> assosiatedTags = new List<Tag>();
+            if (updateHint.IsSaved)
             {
                 using (var DataSource = new HelpContext())
                 {
-                    DataSource.HintTable.Attach(UpdateHint);
-                    DataSource.HintTable.Update(UpdateHint);
+                    DataSource.HintTable.Attach(updateHint);
+                    DataSource.HintTable.Update(updateHint);
                     DataSource.SaveChanges();
                 }
             } else
             {
                 using (var DataSource = new HelpContext())
                 {
-                    DataSource.HintTable.Attach(UpdateHint);
-                    DataSource.HintTable.Add(UpdateHint);
+                    DataSource.HintTable.Attach(updateHint);
+                    DataSource.HintTable.Add(updateHint);
                     DataSource.SaveChanges();
                 }
-                UpdateHint.IsSaved = true;
+                updateHint.IsSaved = true;
             }
         }
         public void AddTempHint()
@@ -218,10 +220,10 @@ namespace voicio.ViewModels
 
         private AutoCompleteBox TagControlInit()
         {
-            var c = new TreeDataGridConverter();
             var addtag = new AutoCompleteBox();
-            addtag.ValueMemberBinding = new Binding("TagText") { Converter = c };
+            addtag.ValueMemberBinding = new Binding("TagText") { Converter = TagGocntrolConverter };
             addtag.IsTextCompletionEnabled = true;
+            addtag.Text = 
             addtag.FilterMode = AutoCompleteFilterMode.Contains;
             using (var DataSource = new HelpContext())
             {
