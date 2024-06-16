@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.SqlClient;
-using System.Data;
 
 namespace voicio.Models
 {
@@ -38,9 +36,10 @@ namespace voicio.Models
         {
             IsSaved = isSaved;
         }
-        public Hint()
+        public Hint(string hintText, string comment)
         {
-            IsSaved = true;
+            HintText = hintText;
+            Comment = comment;
         }
         public Hint(int id, string hintText, string comment)
         {
@@ -76,16 +75,6 @@ namespace voicio.Models
         {
             var path = AppDomain.CurrentDomain.BaseDirectory;
             DbPath = System.IO.Path.Join(path, "helper.db");
-        }
-        public bool ImportHints(List<Hint> data)
-        {
-            using (var copier = new SqlBulkCopy($"Data Source={DbPath}"))
-            {
-                var importData = new DataTable();
-                copier.DestinationTableName = Model.FindEntityType(typeof(Hint)).GetTableName();
-                copier.WriteToServer(importData);
-            }
-            return true;
         }
     }
 }

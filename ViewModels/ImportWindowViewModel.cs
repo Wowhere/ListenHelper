@@ -3,7 +3,7 @@ using ReactiveUI;
 using System.Reactive;
 using System.Threading.Tasks;
 using voicio.Models;
-using System.Data.SqlClient;
+using System.Collections.Generic;
 
 namespace voicio.ViewModels
 {
@@ -16,7 +16,7 @@ namespace voicio.ViewModels
             set => this.RaiseAndSetIfChanged(ref _importText, value);
         }
         public void InputTextImport() {
-
+            List<Hint> import_hints = new List<Hint>();
             using (StringReader reader = new StringReader(ImportText))
             {
                 string line = "";
@@ -24,11 +24,16 @@ namespace voicio.ViewModels
                     line = reader.ReadLine();
                     if (line != null)
                     {
-                        var t = line.Split(',');
+                        string[] t = line.Split(',');
+                        import_hints.Add(new Hint(t[0], t[1]));
                     }
                 } while (line != null);
             }
-
+            using (var DataSource = new HelpContext())
+            {
+                DataSource.HintTable.AddRange(import_hints);
+                DataSource.SaveChangesAsync();
+            }
         }
         public async Task FileImport()
         {
