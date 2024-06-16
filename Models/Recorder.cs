@@ -37,7 +37,7 @@ namespace voicio.Models
         {
             WaveFormat = new WaveFormat(rate: 48000, bits: 16, channels: 1),
             DeviceNumber = 0,
-            BufferMilliseconds = 100,
+            BufferMilliseconds = 10000,
         };
         Microphone.DataAvailable += DataAvailableEvent;
         CustomStream = new MemoryStream();

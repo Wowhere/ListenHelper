@@ -16,11 +16,10 @@ using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using System.Reactive.Linq;
 using Avalonia.Data;
-using System;
-using Avalonia.Markup.Xaml.MarkupExtensions;
-using Avalonia.Data.Converters;
+using voicio.Controls;
 using voicio.Converters;
 using System.Linq.Expressions;
+using System;
 
 namespace voicio.ViewModels
 {
@@ -139,7 +138,8 @@ namespace voicio.ViewModels
                 {
                     recorder.StopRecord();
                     var temp_speech_buf = recorder.GetByteArray();
-                    var recognition = new SpeechRecognition(".\\voice_model", recorder.GetRecorderSampleRate());
+                    string model_path = AppContext.BaseDirectory + "voice_model";
+                    var recognition = new SpeechRecognition(model_path, recorder.GetRecorderSampleRate());
                     JObject rss = JObject.Parse(recognition.Recognize(temp_speech_buf));
                     Query = rss.Properties().Last().Value.ToString();
                 });
@@ -217,25 +217,42 @@ namespace voicio.ViewModels
             panel.HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Stretch;
             return panel;
         }
-
-        private AutoCompleteBox TagControlInit()
+        private ComboBox TagControlInit()
         {
-            var addtag = new AutoCompleteBox();
-            addtag.ValueMemberBinding = new Binding("TagText") { Converter = TagGocntrolConverter };
-            addtag.IsTextCompletionEnabled = true;
-            addtag.Text = 
-            addtag.FilterMode = AutoCompleteFilterMode.Contains;
-            using (var DataSource = new HelpContext())
-            {
-                addtag.ItemsSource = TagsForChoice;
-                addtag.ItemTemplate = new FuncDataTemplate<Tag>((value, namescope) => new Label
-                {   
+            var addTag = new ComboBox();
+            //addTag.SelectedItem = new string[] { "all", "not all" };
+            addTag.ItemsSource = TagsForChoice;
+            addTag.SelectedItem = TagsForChoice[0];
+            addTag.SelectedValueBinding = new Binding("TagText") { Converter = TagGocntrolConverter };
+            addTag.ItemTemplate = new FuncDataTemplate<Tag>((value, namescope) => new Label
+            {   
                     [!Label.ContentProperty] = new Binding("TagText") {}
-                });
-            }
-            var t = new Binding("TagText");
-            return addtag;
+            });
+        //addTag.SelectionMode = SelectionMode.Multiple;
+        //addTag.ItemsSource = TagsForChoice;
+        //addTag.ItemTemplate = new FuncDataTemplate<Tag>((value, namescope) => new TextBox
+        //{
+        //    [!TextBox.TextProperty] = new Binding("TagText") { }
+        //});
+            return addTag;
         }
+        //private AutoCompleteBox TagControlInit()
+        //{
+        //    var addtag = new TagCompleteTextBox();
+        //    addtag.ValueMemberBinding = new Binding("TagText") { Converter = TagGocntrolConverter };
+        //    addtag.IsTextCompletionEnabled = true;
+        //    addtag.FilterMode = AutoCompleteFilterMode.Contains;
+        //    using (var DataSource = new HelpContext())
+        //    {
+        //        addtag.ItemsSource = TagsForChoice;
+        //        addtag.ItemTemplate = new FuncDataTemplate<Tag>((value, namescope) => new Label
+        //        {   
+        //            [!Label.ContentProperty] = new Binding("TagText") {}
+        //        });
+        //    }
+        //    var t = new Binding("TagText");
+        //    return addtag;
+        //}
 
         public void TreeDataGridInit()
         {
