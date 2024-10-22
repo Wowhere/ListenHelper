@@ -20,20 +20,12 @@ namespace voicio.ViewModels
                 w1.Show();
             });
             ShowImportWindowCommand = ReactiveCommand.Create(() => {
-                if (importWindow is not null) { importWindow.Focus(); }
-                else
-                {
-                    importWindow = new ImportWindow() { DataContext = new ImportWindowViewModel() };
-                    importWindow.Show();
-                }
+                var w2 = new ImportWindow() { DataContext = new ImportWindowViewModel() };
+                w2.Show();
             });
             ShowTagsWindowCommand = ReactiveCommand.Create(() => {
-                if (tagWindow is not null) { tagWindow.Focus(); tagWindow.Show(); }
-                else
-                {
-                    tagWindow = new TagWindow() { DataContext = new TagWindowViewModel() };
-                    tagWindow.Show();
-                }
+                var w3 = new TagWindow() { DataContext = new TagWindowViewModel() };
+                w3.Show();
             });
             QuitAppCommand = ReactiveCommand.Create(() => {
                 if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
