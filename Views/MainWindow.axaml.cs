@@ -10,6 +10,7 @@ namespace voicio.Views
         {
             this.Opened += StartFocusing;
             InitializeComponent();
+
         }
         private void StartFocusing(object sender, EventArgs arg) {
             var focused = this.FindControl<AutoCompleteBox>("searchbox");

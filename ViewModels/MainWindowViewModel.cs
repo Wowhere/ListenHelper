@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Avalonia.Threading;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Controls.Models.TreeDataGrid;
 using Avalonia.Controls.Selection;
 using Avalonia.Controls.Templates;
@@ -16,10 +17,10 @@ using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using System.Reactive.Linq;
 using Avalonia.Data;
-using voicio.Controls;
+using voicio.Views;
 using voicio.Converters;
-using System.Linq.Expressions;
 using System;
+using System.Security.Permissions;
 
 namespace voicio.ViewModels
 {
@@ -77,9 +78,14 @@ namespace voicio.ViewModels
         private bool _IsFuzzy = true;
         private bool _IsGridEditable = false;
         private bool _IsAddButtonVisible = false;
-        private bool _IsHighlighting = false;
+        private bool _IsHighlighting = false; //to do when i will understand the way to assign some struct to every table field in TreeDataGrid
         private bool _IsVoiceSearching = false;
         private TreeDataGridConverter TagGocntrolConverter = new TreeDataGridConverter();
+        public bool IsVoiceSearching
+        {
+            get => _IsVoiceSearching;
+            set => this.RaiseAndSetIfChanged(ref _IsVoiceSearching, value);
+        }
         public bool IsTextSearch
         {
             get => _IsTextSearch;
@@ -124,9 +130,9 @@ namespace voicio.ViewModels
         
         public void StartVoiceSearch()
         {
-            if (!_IsVoiceSearching)
+            if (!IsVoiceSearching)
             {
-                _IsVoiceSearching = true;
+                IsVoiceSearching = true;
                 recorder = new NAudioRecorder();
                 Dispatcher.UIThread.Invoke(() =>
                 {
@@ -145,7 +151,7 @@ namespace voicio.ViewModels
                 });
                 
                 StartSearch();
-                _IsVoiceSearching = false;
+                IsVoiceSearching = false;
                 
             }
         }
@@ -228,31 +234,8 @@ namespace voicio.ViewModels
             {   
                     [!Label.ContentProperty] = new Binding("TagText") {}
             });
-        //addTag.SelectionMode = SelectionMode.Multiple;
-        //addTag.ItemsSource = TagsForChoice;
-        //addTag.ItemTemplate = new FuncDataTemplate<Tag>((value, namescope) => new TextBox
-        //{
-        //    [!TextBox.TextProperty] = new Binding("TagText") { }
-        //});
             return addTag;
         }
-        //private AutoCompleteBox TagControlInit()
-        //{
-        //    var addtag = new TagCompleteTextBox();
-        //    addtag.ValueMemberBinding = new Binding("TagText") { Converter = TagGocntrolConverter };
-        //    addtag.IsTextCompletionEnabled = true;
-        //    addtag.FilterMode = AutoCompleteFilterMode.Contains;
-        //    using (var DataSource = new HelpContext())
-        //    {
-        //        addtag.ItemsSource = TagsForChoice;
-        //        addtag.ItemTemplate = new FuncDataTemplate<Tag>((value, namescope) => new Label
-        //        {   
-        //            [!Label.ContentProperty] = new Binding("TagText") {}
-        //        });
-        //    }
-        //    var t = new Binding("TagText");
-        //    return addtag;
-        //}
 
         public void TreeDataGridInit()
         {
