@@ -30,7 +30,7 @@
     <PackageReference Include="Avalonia.Fonts.Inter" Version="11.1.4" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
     <PackageReference Include="Avalonia.ReactiveUI" Version="11.1.4" />
-    <PackageReference Include="Avalonia.Xaml.Interactivity" Version="11.1.0.4" />
+    <PackageReference Include="Avalonia.Xaml.Interactivity" Version="11.1.0.7" />
     <PackageReference Include="EntityFramework" Version="6.5.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.10">
