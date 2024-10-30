@@ -307,6 +307,14 @@ namespace voicio.ViewModels
                     if (IsTagSearch) hints.Add(DataSource.HintTable.Where(b => b.HintTag.Any(pz => pz.Tag.TagText == Query)).ToList());
                 }
                 HintsRows = new ObservableCollection<Hint>(hints.Distinct());
+                if (HintsRows.Count > 0)
+                {
+                    StatusText = "Search result: " + HintsRows.Count.ToString();
+                } else
+                {
+                    StatusText = "No results found";
+                }
+                
             }
             TreeDataGridInit();
         }

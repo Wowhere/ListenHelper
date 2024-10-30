@@ -96,8 +96,7 @@
 			<!--<CheckBox IsChecked="{Binding IsHighlighting}" Margin="170,0,20,0">Highlight</CheckBox>-->
 		</StackPanel>
 		<DockPanel>
-			<Label Margin="10,5,5,0">Status</Label>
-			<ComboBox Width="500"></ComboBox>
+			<Label Margin="10,5,5,0" Content="{Binding StatusText}"></Label>
 		</DockPanel>
 		<DockPanel HorizontalAlignment="Stretch">
 				<Button Width="340" Height="40" Command="{Binding StartSearchCommand}" Content="Search" Margin="10,10,20,10" Background="RoyalBlue" IsDefault="True"></Button>
