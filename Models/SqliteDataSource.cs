@@ -61,6 +61,11 @@ namespace voicio.Models
             Id = id;
         }
     }   
+    public class VoiceOperation
+    {
+        public int Id { get; set; }
+        public bool IsActive { get; set; } = true;
+    }
     public class HelpContext : DbContext
     {
         public DbSet<Tag>? TagTable { get; set; }
