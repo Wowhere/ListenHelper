@@ -65,6 +65,8 @@ namespace voicio.Models
     {
         public int Id { get; set; }
         public bool IsActive { get; set; } = true;
+        public string? Description { get; set; }
+        public string CommandText { get; set; }
     }
     public class HelpContext : DbContext
     {

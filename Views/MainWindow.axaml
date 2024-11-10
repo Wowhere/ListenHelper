@@ -115,7 +115,7 @@
 			<Button Height="40" IsVisible="{Binding IsAddButtonVisible, Mode = TwoWay}" Command="{Binding AddTempHint}" Content="Add" Margin="15,10,15,10" Background="#D538A669" Width="80"></Button>
 			<ToggleButton IsChecked="{Binding IsGridEditable, Mode = TwoWay}" Width="100" Classes="EditingMode" Height="40" Margin="15,10,0,10"></ToggleButton>
 		</DockPanel>
-		<TreeDataGrid x:Name="resultGrid" Source="{Binding HintsGridData}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="2"  BorderBrush="Gray" CanUserResizeColumns="True" Tapped="CopyHintToClipboard">
+		<TreeDataGrid Margin="10,0,10,0" x:Name="resultGrid" Source="{Binding HintsGridData}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="2"  BorderBrush="Gray" CanUserResizeColumns="True" Tapped="CopyHintToClipboard">
 			<!--<TreeDataGridRowsPresenter Background="{StaticResource RowColorGridConverter}"/>-->
 			<TreeDataGrid.ContextMenu>
 				<ContextMenu>
