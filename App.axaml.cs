@@ -4,6 +4,8 @@ using Avalonia.Markup.Xaml;
 using voicio.ViewModels;
 using voicio.Views;
 using voicio.Models;
+using System.Threading.Tasks;
+using voicio.Services;
 
 namespace voicio
 {
@@ -18,7 +20,7 @@ namespace voicio
         {
             AvaloniaXamlLoader.Load(this);
         }
-        public override void OnFrameworkInitializationCompleted()
+        public async override void OnFrameworkInitializationCompleted()
         {
             var tempdb = new HelpContext();
             tempdb.Database.EnsureCreated(); //create DB if no DB is found
@@ -30,6 +32,10 @@ namespace voicio
                 };
                 desktop.ShutdownMode = Avalonia.Controls.ShutdownMode.OnExplicitShutdown;
             }
+            await Task.Run(() =>
+            {
+                new VoiceService().StartService();
+            });
             base.OnFrameworkInitializationCompleted();
         }
     }

@@ -67,6 +67,7 @@ namespace voicio.Models
         public bool IsActive { get; set; } = true;
         public string? Description { get; set; }
         public string CommandText { get; set; }
+        public byte[] ActionTreeExpression { get; set; }
     }
     public class HelpContext : DbContext
     {
