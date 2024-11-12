@@ -40,11 +40,10 @@
 	<Border BorderThickness="1.5" BorderBrush="#D2B1A38E" IsVisible="True">
 		<StackPanel>
 			<Label Margin="10,5,10,0" BorderBrush="White">Voice Operations</Label>
-			<DockPanel>
-				<ToggleButton IsChecked="{Binding IsPinnedWindow, Mode = TwoWay}" Classes="Pin" Width="65" Height="30" Margin="5,40,10,0">
-				</ToggleButton>
+			<DockPanel HorizontalAlignment="Stretch">
+			<Button Height="40" Command="{Binding AddTempOperation}" Content="Add" Margin="15,10,15,10" Background="#D538A669" Width="80"></Button>
 			</DockPanel>
-			<TreeDataGrid x:Name="tagGrid" Source="{Binding TagsGridData}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="2" BorderBrush="Gray">
+			<TreeDataGrid x:Name="tagGrid" Source="{Binding VoiceOperationGridData}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="2" BorderBrush="Gray">
 			</TreeDataGrid>
 		</StackPanel>
 	</Border>

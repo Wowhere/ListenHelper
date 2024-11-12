@@ -26,7 +26,6 @@ namespace voicio.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        
         private NAudioRecorder recorder;
         private System.Timers.Timer RecordTimer;
         private TaskCompletionSource<bool> voiceSearchTask;
@@ -126,8 +125,7 @@ namespace voicio.ViewModels
             }
         }
         public ReactiveCommand<Unit, Unit> StartSearchCommand { get; }
-        public ReactiveCommand<Unit, Unit> StartVoiceSearchCommand { get; }
-        
+        public ReactiveCommand<Unit, Unit> StartVoiceSearchCommand { get; }   
         public void StartVoiceSearch()
         {
             if (!IsVoiceSearching)
@@ -260,7 +258,6 @@ namespace voicio.ViewModels
                         new TemplateColumn<Hint>("", new FuncDataTemplate<Hint>((a, e) => TagControlInit(), supportsRecycling: true), width: TemplateColumnLength),
                         new TemplateColumn<Hint>("", new FuncDataTemplate<Hint>((a, e) => ButtonsPanelInit(), supportsRecycling: true), width: TemplateColumnLength),
                     },
-                    
                 };
                 IsAddButtonVisible = true;
             }
