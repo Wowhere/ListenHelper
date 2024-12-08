@@ -2,6 +2,7 @@
 using Avalonia.Controls.Models.TreeDataGrid;
 using Avalonia.Controls.Selection;
 using Avalonia.Controls.Templates;
+using Avalonia.Interactivity;
 using Avalonia.Media;
 using ReactiveUI;
 using System.Collections.Generic;
@@ -9,10 +10,31 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using voicio.Models;
 
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System.IO;
+
 namespace voicio.ViewModels
 {
     public class VoiceOperationViewModel : ViewModelBase
     {
+        private byte[] CreateCompiledExtension(string code)
+        {
+            var options = new CSharpCompilationOptions((OutputKind)LanguageVersion.Latest);
+            var syntaxTree = CSharpSyntaxTree.ParseText(code);
+
+            var compilation = CSharpCompilation.Create("DynamicAssembly")
+            .AddSyntaxTrees(syntaxTree)
+            .WithOptions(new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
+            byte[] bytedll = { };
+            using (var ms = new MemoryStream())
+            {
+                var result = compilation.Emit(ms);
+                bytedll = ms.ToArray();
+            }
+            return bytedll;
+        }
         private bool _IsPinnedWindow = false;
         public bool IsPinnedWindow
         {
@@ -42,6 +64,70 @@ namespace voicio.ViewModels
             b.IsChecked = op.IsActive;
             return b;
         }
+        private void RemoveVoiceOperation(object sender, RoutedEventArgs e)
+        {
+            Button removeButton = (Button)sender;
+            VoiceOperation removedOps = (VoiceOperation)removeButton.DataContext;
+            VoiceOperationRows.Remove(removedOps);
+            if (removedOps.IsSaved)
+            {
+                using (var DataSource = new HelpContext())
+                {
+                    DataSource.VoiceOperationTable.Attach(removedOps);
+                    DataSource.VoiceOperationTable.Remove(removedOps);
+                    DataSource.SaveChanges();
+                }
+            }
+        }
+        private void UpdateVoiceOperation(object sender, RoutedEventArgs e)
+        {
+            Button updateButton = (Button)sender;
+            VoiceOperation updateHint = (VoiceOperation)updateButton.DataContext;
+            List<Tag> assosiatedTags = new List<Tag>();
+            if (updateHint.IsSaved)
+            {
+                using (var DataSource = new HelpContext())
+                {
+                    DataSource.VoiceOperationTable.Attach(updateHint);
+                    DataSource.VoiceOperationTable.Update(updateHint);
+                    DataSource.SaveChanges();
+                }
+            }
+            else
+            {
+                using (var DataSource = new HelpContext())
+                {
+                    DataSource.VoiceOperationTable.Attach(updateHint);
+                    DataSource.VoiceOperationTable.Add(updateHint);
+                    DataSource.SaveChanges();
+                }
+                updateHint.IsSaved = true;
+            }
+        }
+        private Button UpdateButtonInit()
+        {
+            var b = new Button();
+            b.Background = new SolidColorBrush() { Color = new Color(255, 34, 139, 34) };
+            b.Content = "Add";
+            b.Click += UpdateVoiceOperation;
+            return b;
+        }
+        private Button RemoveButtonInit()
+        {
+            var b = new Button();
+            b.Background = new SolidColorBrush() { Color = new Color(255, 80, 00, 20) };
+            b.Content = "Remove";
+            b.Click += RemoveVoiceOperation;
+            return b;
+        }
+        private DockPanel ButtonsPanelInit()
+        {
+            var panel = new DockPanel();
+            panel.Children.Add(UpdateButtonInit());
+            panel.Children.Add(RemoveButtonInit());
+            panel.HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Stretch;
+            return panel;
+        }
         public void TreeDataGridInit()
         {
             var TextColumnLength = new GridLength(1, GridUnitType.Star);
@@ -53,6 +139,7 @@ namespace voicio.ViewModels
                 MinWidth = new GridLength(80, GridUnitType.Pixel)
             };
             TemplateColumn<VoiceOperation> IsActiveOperationColumn = new TemplateColumn<VoiceOperation>("", new FuncDataTemplate<VoiceOperation>((a, e) => IsActiveOperationCheckboxInit(a), supportsRecycling: true), width: TemplateColumnLength);
+            TemplateColumn<VoiceOperation> ButtonColumn= new TemplateColumn<VoiceOperation>("", new FuncDataTemplate<VoiceOperation>((a, e) => ButtonsPanelInit(), supportsRecycling: true), width: TemplateColumnLength);
             TextColumn<VoiceOperation, string> DescriptionTextColumn = new TextColumn<VoiceOperation, string>("Description", x => x.Description, (r, v) => r.Description = v, options: EditOptions, width: TextColumnLength);
             TextColumn<VoiceOperation, string> CommandTextColumn = new TextColumn<VoiceOperation, string>("Voice Command", x => x.Command, (r, v) => r.Command = v, options: EditOptions, width: TextColumnLength);
             VoiceOperationGridData = new FlatTreeDataGridSource<VoiceOperation>(VoiceOperationRows)
@@ -61,7 +148,8 @@ namespace voicio.ViewModels
                     {
                         IsActiveOperationColumn,
                         DescriptionTextColumn,
-                        CommandTextColumn
+                        CommandTextColumn,
+                        ButtonColumn
                     },
             };
             VoiceOperationGridData.Selection = new TreeDataGridCellSelectionModel<VoiceOperation>(VoiceOperationGridData);

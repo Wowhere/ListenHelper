@@ -55,8 +55,7 @@ namespace voicio.Models
         public int HintId { get; set; }
         public Tag Tag { get; set; } = null!;
         public Hint Hint { get; set; } = null!;
-        public HintTag() {      
-        }
+        public HintTag() { }
         public HintTag(int id) {
             Id = id;
         }
