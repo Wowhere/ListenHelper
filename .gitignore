@@ -16,3 +16,6 @@ bin
 *.json
 .vs
 /obj/*
+/test
+/codeql-custom-queries-csharp
+.github/codeql/extensions/test-csharp/codeql-pack.yml
