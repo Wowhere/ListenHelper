@@ -15,6 +15,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.IO;
 using AvaloniaEdit;
+using Avalonia;
 
 namespace voicio.ViewModels
 {
@@ -64,27 +65,32 @@ namespace voicio.ViewModels
         {
             var newWindow = new Window() { DataContext = new MainWindowViewModel() };
             Button codeButton = (Button)sender;
-
+            newWindow.WindowState = WindowState.Maximized;
             VoiceOperation obj = (VoiceOperation)codeButton.DataContext;
             newWindow.Title = "Code for \""+ obj.Command + "\" command...";
             AvaloniaEdit.TextEditor logTextBox = new AvaloniaEdit.TextEditor();
             AvaloniaEdit.Document.TextDocument logText = new AvaloniaEdit.Document.TextDocument("");
             logTextBox.DataContext = newWindow.DataContext;
-            //logTextBox.Document = logText;
             logTextBox.ShowLineNumbers = true;
-            logTextBox.BorderBrush = new SolidColorBrush(Color.Parse("#D70040"));
+            logTextBox.Height = 750;
+            
+            logTextBox.BorderBrush = new SolidColorBrush(Color.Parse("#008b8b"));
+            logTextBox.BorderThickness = Thickness.Parse("2");
+            logTextBox.VerticalScrollBarVisibility = Avalonia.Controls.Primitives.ScrollBarVisibility.Visible;
+            logTextBox.HorizontalScrollBarVisibility = Avalonia.Controls.Primitives.ScrollBarVisibility.Visible;
+            logTextBox.HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Stretch;
 
             Button compileButton = new Button();
             compileButton.DataContext = newWindow.DataContext;
             compileButton.Click += CreateCompiledExtension;
-
+            compileButton.Width = 80;
+            compileButton.Content = "Compile";
+            compileButton.Margin = Thickness.Parse("5,5,5,5");
             var panel = new StackPanel();
-            var editpanel = new StackPanel();
-            var buttonpanel = new StackPanel();
-            editpanel.Children.Add(logTextBox);
-            buttonpanel.Children.Add(compileButton);
-            panel.Children.Add(editpanel);
-            panel.Children.Add(buttonpanel);
+            panel.VerticalAlignment = Avalonia.Layout.VerticalAlignment.Stretch;
+            panel.HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Stretch;
+            panel.Children.Add(logTextBox);
+            panel.Children.Add(compileButton);
             newWindow.Content = panel;
             newWindow.Show();
         }
