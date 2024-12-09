@@ -14,26 +14,28 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.IO;
+using AvaloniaEdit;
 
 namespace voicio.ViewModels
 {
     public class VoiceOperationViewModel : ViewModelBase
     {
-        private byte[] CreateCompiledExtension(string code)
+        private void CreateCompiledExtension(object sender, RoutedEventArgs e)
         {
+            Button codeButton = (Button)sender;
+            VoiceOperation obj = (VoiceOperation)codeButton.DataContext;
+            string code = "";
             var options = new CSharpCompilationOptions((OutputKind)LanguageVersion.Latest);
             var syntaxTree = CSharpSyntaxTree.ParseText(code);
 
             var compilation = CSharpCompilation.Create("DynamicAssembly")
             .AddSyntaxTrees(syntaxTree)
             .WithOptions(new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
-            byte[] bytedll = { };
             using (var ms = new MemoryStream())
             {
                 var result = compilation.Emit(ms);
-                bytedll = ms.ToArray();
+                obj.ActionTreeExpression = ms.ToArray();  
             }
-            return bytedll;
         }
         private bool _IsPinnedWindow = false;
         public bool IsPinnedWindow
@@ -57,6 +59,38 @@ namespace voicio.ViewModels
         {
             VoiceOperation newOp = new VoiceOperation(false);
             VoiceOperationRows.Add(newOp);
+        }
+        private void CompileActionViewer(object sender, RoutedEventArgs e)
+        {
+            var newWindow = new Window() { DataContext = new MainWindowViewModel() };
+            Button codeButton = (Button)sender;
+
+            VoiceOperation obj = (VoiceOperation)codeButton.DataContext;
+            newWindow.Title = "Code for \""+ obj.Command + "\" command...";
+            AvaloniaEdit.TextEditor logTextBox = new AvaloniaEdit.TextEditor();
+            AvaloniaEdit.Document.TextDocument logText = new AvaloniaEdit.Document.TextDocument("");
+            logTextBox.DataContext = newWindow.DataContext;
+            //logTextBox.Document = logText;
+            logTextBox.ShowLineNumbers = true;
+            logTextBox.BorderBrush = new SolidColorBrush(Color.Parse("#D70040"));
+
+            Button compileButton = new Button();
+            compileButton.DataContext = newWindow.DataContext;
+            compileButton.Click += CreateCompiledExtension;
+
+            var panel = new DockPanel();
+
+            panel.Children.Add(logTextBox);
+            panel.Children.Add(compileButton);
+            newWindow.Content = panel;
+            newWindow.Show();
+        }
+        private Button ToggleCompileActionButtonInit(VoiceOperation obj)
+        {
+            var LogViewButton = new Button();
+            LogViewButton.Click += CompileActionViewer;
+            LogViewButton.Content = "Code";
+            return LogViewButton;
         }
         private CheckBox IsActiveOperationCheckboxInit(VoiceOperation op)
         {
@@ -138,8 +172,9 @@ namespace voicio.ViewModels
                 BeginEditGestures = BeginEditGestures.Tap,
                 MinWidth = new GridLength(80, GridUnitType.Pixel)
             };
-            TemplateColumn<VoiceOperation> IsActiveOperationColumn = new TemplateColumn<VoiceOperation>("", new FuncDataTemplate<VoiceOperation>((a, e) => IsActiveOperationCheckboxInit(a), supportsRecycling: true), width: TemplateColumnLength);
-            TemplateColumn<VoiceOperation> ButtonColumn= new TemplateColumn<VoiceOperation>("", new FuncDataTemplate<VoiceOperation>((a, e) => ButtonsPanelInit(), supportsRecycling: true), width: TemplateColumnLength);
+            TemplateColumn<VoiceOperation> IsActiveOperationColumn = new TemplateColumn<VoiceOperation>("Enabled", new FuncDataTemplate<VoiceOperation>((a, e) => IsActiveOperationCheckboxInit(a), supportsRecycling: true), width: TemplateColumnLength);
+            TemplateColumn<VoiceOperation> ButtonColumn = new TemplateColumn<VoiceOperation>("", new FuncDataTemplate<VoiceOperation>((a, e) => ButtonsPanelInit(), supportsRecycling: true), width: TemplateColumnLength);
+            TemplateColumn<VoiceOperation> CompileColumn = new TemplateColumn<VoiceOperation>("", new FuncDataTemplate<VoiceOperation>((a, e) => ToggleCompileActionButtonInit(a), supportsRecycling: true), width: TemplateColumnLength);
             TextColumn<VoiceOperation, string> DescriptionTextColumn = new TextColumn<VoiceOperation, string>("Description", x => x.Description, (r, v) => r.Description = v, options: EditOptions, width: TextColumnLength);
             TextColumn<VoiceOperation, string> CommandTextColumn = new TextColumn<VoiceOperation, string>("Voice Command", x => x.Command, (r, v) => r.Command = v, options: EditOptions, width: TextColumnLength);
             VoiceOperationGridData = new FlatTreeDataGridSource<VoiceOperation>(VoiceOperationRows)
@@ -149,6 +184,7 @@ namespace voicio.ViewModels
                         IsActiveOperationColumn,
                         DescriptionTextColumn,
                         CommandTextColumn,
+                        CompileColumn,
                         ButtonColumn
                     },
             };
