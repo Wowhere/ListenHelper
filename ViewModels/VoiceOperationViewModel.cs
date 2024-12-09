@@ -78,10 +78,13 @@ namespace voicio.ViewModels
             compileButton.DataContext = newWindow.DataContext;
             compileButton.Click += CreateCompiledExtension;
 
-            var panel = new DockPanel();
-
-            panel.Children.Add(logTextBox);
-            panel.Children.Add(compileButton);
+            var panel = new StackPanel();
+            var editpanel = new StackPanel();
+            var buttonpanel = new StackPanel();
+            editpanel.Children.Add(logTextBox);
+            buttonpanel.Children.Add(compileButton);
+            panel.Children.Add(editpanel);
+            panel.Children.Add(buttonpanel);
             newWindow.Content = panel;
             newWindow.Show();
         }

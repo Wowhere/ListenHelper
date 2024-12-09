@@ -221,19 +221,19 @@ namespace voicio.ViewModels
             panel.HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Stretch;
             return panel;
         }
-        private ComboBox TagControlInit()
-        {
-            var addTag = new ComboBox();
-            //addTag.SelectedItem = new string[] { "all", "not all" };
-            addTag.ItemsSource = TagsForChoice;
-            addTag.SelectedItem = TagsForChoice[0];
-            addTag.SelectedValueBinding = new Binding("TagText") { Converter = TagGocntrolConverter };
-            addTag.ItemTemplate = new FuncDataTemplate<Tag>((value, namescope) => new Label
-            {   
-                    [!Label.ContentProperty] = new Binding("TagText") {}
-            });
-            return addTag;
-        }
+        //private ComboBox TagControlInit()
+        //{
+        //    var addTag = new ComboBox();
+        //    //addTag.SelectedItem = new string[] { "all", "not all" };
+        //    addTag.ItemsSource = TagsForChoice;
+        //    addTag.SelectedItem = TagsForChoice[0];
+        //    addTag.SelectedValueBinding = new Binding("TagText") { Converter = TagGocntrolConverter };
+        //    addTag.ItemTemplate = new FuncDataTemplate<Tag>((value, namescope) => new Label
+        //    {   
+        //            [!Label.ContentProperty] = new Binding("TagText") {}
+        //    });
+        //    return addTag;
+        //}
 
         public void TreeDataGridInit()
         {
@@ -255,7 +255,7 @@ namespace voicio.ViewModels
                     {
                         HintTextColumn,
                         HintCommentColumn,
-                        new TemplateColumn<Hint>("", new FuncDataTemplate<Hint>((a, e) => TagControlInit(), supportsRecycling: true), width: TemplateColumnLength),
+                        //new TemplateColumn<Hint>("", new FuncDataTemplate<Hint>((a, e) => TagControlInit(), supportsRecycling: true), width: TemplateColumnLength),
                         new TemplateColumn<Hint>("", new FuncDataTemplate<Hint>((a, e) => ButtonsPanelInit(), supportsRecycling: true), width: TemplateColumnLength),
                     },
                 };
@@ -275,7 +275,7 @@ namespace voicio.ViewModels
                     {
                         HintTextColumn,
                         HintCommentColumn,
-                        new TemplateColumn<Hint>("", new FuncDataTemplate<Hint>((a, e) => TagControlInit(), supportsRecycling: true), width: TemplateColumnLength)
+                        //new TemplateColumn<Hint>("", new FuncDataTemplate<Hint>((a, e) => TagControlInit(), supportsRecycling: true), width: TemplateColumnLength)
                     },
                 };
                 IsAddButtonVisible = false;
