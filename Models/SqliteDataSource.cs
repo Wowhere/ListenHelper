@@ -67,6 +67,7 @@ namespace voicio.Models
         public bool IsActive { get; set; } = true;
         public string? Description { get; set; }
         public string? Command { get; set; }
+        public string? SourceCode { get; set; } = "";
         public byte[]? ActionTreeExpression { get; set; }
         [NotMapped]
         public bool IsSaved { get; set; } = true; //false = temp, true = in DB

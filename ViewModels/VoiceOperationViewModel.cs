@@ -25,9 +25,8 @@ namespace voicio.ViewModels
         {
             Button codeButton = (Button)sender;
             VoiceOperation obj = (VoiceOperation)codeButton.DataContext;
-            string code = "";
             var options = new CSharpCompilationOptions((OutputKind)LanguageVersion.Latest);
-            var syntaxTree = CSharpSyntaxTree.ParseText(code);
+            var syntaxTree = CSharpSyntaxTree.ParseText(obj.SourceCode);
 
             var compilation = CSharpCompilation.Create("DynamicAssembly")
             .AddSyntaxTrees(syntaxTree)
@@ -35,7 +34,26 @@ namespace voicio.ViewModels
             using (var ms = new MemoryStream())
             {
                 var result = compilation.Emit(ms);
-                obj.ActionTreeExpression = ms.ToArray();  
+                obj.ActionTreeExpression = ms.ToArray();
+                if (obj.IsSaved)
+                {
+                    using (var DataSource = new HelpContext())
+                    {
+                        DataSource.VoiceOperationTable.Attach(obj);
+                        DataSource.VoiceOperationTable.Update(obj);
+                        DataSource.SaveChanges();
+                    }
+                }
+                else
+                {
+                    using (var DataSource = new HelpContext())
+                    {
+                        DataSource.VoiceOperationTable.Attach(obj);
+                        DataSource.VoiceOperationTable.Add(obj);
+                        DataSource.SaveChanges();
+                        obj.IsSaved = true;
+                    }
+                }
             }
         }
         private bool _IsPinnedWindow = false;
@@ -63,14 +81,15 @@ namespace voicio.ViewModels
         }
         private void CompileActionViewer(object sender, RoutedEventArgs e)
         {
-            var newWindow = new Window() { DataContext = new MainWindowViewModel() };
             Button codeButton = (Button)sender;
+            var newWindow = new Window() { DataContext = codeButton.DataContext };
             newWindow.WindowState = WindowState.Maximized;
             VoiceOperation obj = (VoiceOperation)codeButton.DataContext;
             newWindow.Title = "Code for \""+ obj.Command + "\" command...";
             AvaloniaEdit.TextEditor logTextBox = new AvaloniaEdit.TextEditor();
-            AvaloniaEdit.Document.TextDocument logText = new AvaloniaEdit.Document.TextDocument("");
-            logTextBox.DataContext = newWindow.DataContext;
+            AvaloniaEdit.Document.TextDocument logText = new AvaloniaEdit.Document.TextDocument();
+            logText.Text = obj.SourceCode;
+            //logTextBox.DataContext = newWindow.DataContext;
             logTextBox.ShowLineNumbers = true;
             logTextBox.Height = 750;
             
@@ -81,9 +100,8 @@ namespace voicio.ViewModels
             logTextBox.HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Stretch;
 
             Button compileButton = new Button();
-            compileButton.DataContext = newWindow.DataContext;
+            //compileButton.DataContext = newWindow.DataContext;
             compileButton.Click += CreateCompiledExtension;
-            compileButton.Width = 80;
             compileButton.Content = "Compile";
             compileButton.Margin = Thickness.Parse("5,5,5,5");
             var panel = new StackPanel();
@@ -143,8 +161,8 @@ namespace voicio.ViewModels
                     DataSource.VoiceOperationTable.Attach(updateHint);
                     DataSource.VoiceOperationTable.Add(updateHint);
                     DataSource.SaveChanges();
+                    updateHint.IsSaved = true;
                 }
-                updateHint.IsSaved = true;
             }
         }
         private Button UpdateButtonInit()
