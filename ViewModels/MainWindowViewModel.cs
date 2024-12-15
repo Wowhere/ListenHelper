@@ -5,7 +5,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Avalonia.Threading;
 using Avalonia.Controls;
-using Avalonia.Input;
 using Avalonia.Controls.Models.TreeDataGrid;
 using Avalonia.Controls.Selection;
 using Avalonia.Controls.Templates;
@@ -16,11 +15,8 @@ using System.Reactive;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using System.Reactive.Linq;
-using Avalonia.Data;
-using voicio.Views;
 using voicio.Converters;
 using System;
-using System.Security.Permissions;
 
 namespace voicio.ViewModels
 {
@@ -245,7 +241,9 @@ namespace voicio.ViewModels
                 var EditOptions = new TextColumnOptions<Hint>
                 {
                     BeginEditGestures = BeginEditGestures.Tap,
-                    MinWidth = new GridLength(80, GridUnitType.Pixel)
+                    MinWidth = new GridLength(80, GridUnitType.Pixel),
+                    IsTextSearchEnabled = true,
+                    
                 };
                 TextColumn<Hint, string> HintTextColumn = new TextColumn<Hint, string>("Text", x => x.HintText, (r, v) => r.HintText = v, options: EditOptions, width: TextColumnLength);
                 TextColumn<Hint, string> HintCommentColumn = new TextColumn<Hint, string>("Comment", x => x.Comment, (r, v) => r.Comment = v, options: EditOptions, width: TextColumnLength);
