@@ -27,8 +27,14 @@ namespace voicio.Models
     {
         [Key, Required]
         public int Id { get; set; }
-        public string? HintText { get; set; }
-        public string? Comment { get; set; }
+        public string? HintText { 
+            get; 
+            set; 
+        }
+        public string? Comment { 
+            get; 
+            set; 
+        }
         public List<HintTag> HintTag { get; } = new();
         [NotMapped]
         public bool IsSaved { get; set; } = true; //false = temp, true = in DB
