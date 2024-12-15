@@ -4,9 +4,9 @@ using Avalonia.Input;
 
 namespace voicio.Views
 {
-    public partial class ImportWindow : Window
+    public partial class CodeWindow : Window
     {
-        public ImportWindow()
+        public CodeWindow()
         {
             InitializeComponent();
         }

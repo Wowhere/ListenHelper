@@ -9,53 +9,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using voicio.Models;
-
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System.IO;
-using AvaloniaEdit;
-using Avalonia;
+using voicio.Views;
 
 namespace voicio.ViewModels
 {
     public class VoiceOperationViewModel : ViewModelBase
     {
-        private void CreateCompiledExtension(object sender, RoutedEventArgs e)
-        {
-            Button codeButton = (Button)sender;
-            VoiceOperation obj = (VoiceOperation)codeButton.DataContext;
-            var options = new CSharpCompilationOptions((OutputKind)LanguageVersion.Latest);
-            var syntaxTree = CSharpSyntaxTree.ParseText(obj.SourceCode);
-
-            var compilation = CSharpCompilation.Create("DynamicAssembly")
-            .AddSyntaxTrees(syntaxTree)
-            .WithOptions(new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
-            using (var ms = new MemoryStream())
-            {
-                var result = compilation.Emit(ms);
-                obj.ActionTreeExpression = ms.ToArray();
-                if (obj.IsSaved)
-                {
-                    using (var DataSource = new HelpContext())
-                    {
-                        DataSource.VoiceOperationTable.Attach(obj);
-                        DataSource.VoiceOperationTable.Update(obj);
-                        DataSource.SaveChanges();
-                    }
-                }
-                else
-                {
-                    using (var DataSource = new HelpContext())
-                    {
-                        DataSource.VoiceOperationTable.Attach(obj);
-                        DataSource.VoiceOperationTable.Add(obj);
-                        DataSource.SaveChanges();
-                        obj.IsSaved = true;
-                    }
-                }
-            }
-        }
         private bool _IsPinnedWindow = false;
         public bool IsPinnedWindow
         {
@@ -81,36 +40,8 @@ namespace voicio.ViewModels
         }
         private void CompileActionViewer(object sender, RoutedEventArgs e)
         {
-            Button codeButton = (Button)sender;
-            var newWindow = new Window() { DataContext = codeButton.DataContext };
-            newWindow.WindowState = WindowState.Maximized;
-            VoiceOperation obj = (VoiceOperation)codeButton.DataContext;
-            newWindow.Title = "Code for \""+ obj.Command + "\" command...";
-            AvaloniaEdit.TextEditor logTextBox = new AvaloniaEdit.TextEditor();
-            AvaloniaEdit.Document.TextDocument logText = new AvaloniaEdit.Document.TextDocument();
-            logText.Text = obj.SourceCode;
-            //logTextBox.DataContext = newWindow.DataContext;
-            logTextBox.ShowLineNumbers = true;
-            logTextBox.Height = 750;
-            
-            logTextBox.BorderBrush = new SolidColorBrush(Color.Parse("#008b8b"));
-            logTextBox.BorderThickness = Thickness.Parse("2");
-            logTextBox.VerticalScrollBarVisibility = Avalonia.Controls.Primitives.ScrollBarVisibility.Visible;
-            logTextBox.HorizontalScrollBarVisibility = Avalonia.Controls.Primitives.ScrollBarVisibility.Visible;
-            logTextBox.HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Stretch;
-
-            Button compileButton = new Button();
-            //compileButton.DataContext = newWindow.DataContext;
-            compileButton.Click += CreateCompiledExtension;
-            compileButton.Content = "Compile";
-            compileButton.Margin = Thickness.Parse("5,5,5,5");
-            var panel = new StackPanel();
-            panel.VerticalAlignment = Avalonia.Layout.VerticalAlignment.Stretch;
-            panel.HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Stretch;
-            panel.Children.Add(logTextBox);
-            panel.Children.Add(compileButton);
-            newWindow.Content = panel;
-            newWindow.Show();
+            var codeWindow = new CodeWindow() { };
+            codeWindow.Show();
         }
         private Button ToggleCompileActionButtonInit(VoiceOperation obj)
         {
