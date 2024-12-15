@@ -40,7 +40,8 @@ namespace voicio.ViewModels
         }
         private void CompileActionViewer(object sender, RoutedEventArgs e)
         {
-            var codeWindow = new CodeWindow() { };
+            var btn = (Button)sender;
+            var codeWindow = new CodeWindow() {DataContext=new CodeWindowViewModel((VoiceOperation)btn.DataContext) };
             codeWindow.Show();
         }
         private Button ToggleCompileActionButtonInit(VoiceOperation obj)
